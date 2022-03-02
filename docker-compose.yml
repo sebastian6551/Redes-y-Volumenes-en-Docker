@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+    web:
+        container_name: flask-app
+        build: .
+        ports:
+            - '5000:5000'
+        volumes:
+            - .:/code
+        environment:
+            FLASK_ENV: development
+        networks:
+            - red1
+            - red2
+
+    mysql-db:
+        container_name: myDb
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: 2022
+            MYSQL_DATABASE: deportes
+        ports:
+            - '3308:3306'
+        volumes:
+            - ./myVolumen:/var/lib/mysql
+        networks:
+            - red1
+
+    mycontainer:
+        container_name: contenedor_interprete
+        image: alpine
+        stdin_open: true
+        tty: true
+        networks:
+            - red2
+volumes:
+    myVolumen:
+        external: true
+networks:
+    red1:
+    red2:
